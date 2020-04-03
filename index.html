@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr_FR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Description de ma page">
+    <title>Touiter</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+      <header class="site-header">
+        <div class="header-container">
+            <h1>Touiter</h1>
+            <nav class="main-nav">
+                <button class="toggle-menu" aria-expanded="false" aria-controls="menu">
+                    <span class="screen-reader-text">Menu</span>
+                </button>
+                <ul class="menu" id="menu" hidden>
+                    <li><a href="#new_touit">Ecrire un touit</a></li>
+                    <li><a href="#read_touits">Lire les touits</a></li>
+                    <!-- Possibles liens vers les futurs modules  -->
+                </ul>
+            </nav>
+        </div>
+      </header>
+      <main>
+          <div class="main-container">
+            <section id="new-touit" class="new-touit">
+                <div class="container">
+                    <h2 class="section-title">Quoi de <strong>touit</strong> aujourd'hui ?</h2>
+                    <form action="">
+                        <label for="pseudo" class="screen-reader-text">Pseudo</label>
+                        <input type="text" name="" id="pseudo" class="pseudo" placeholder="Pseudo" maxlength="16">
+                        <label for="msg" class="screen-reader-text">Message</label>
+                        <textarea name="" id="msg" class="message" placeholder="Bonjour à tous !" maxlength="256"></textarea>
+                        <button type="button" class="btn" id="submit">Touiter</button>
+                    </form>
+                </div>
+            </section>
+            <section id="read-touits" class="read-touits">
+                <div class="container">
+                    <h2 class="section-title">Déjà <strong>touité</strong> au CEFIM</h2>
+                    <ul class="liste-touits">
+                        <li class="touit">
+                            <article class="card">
+                                <h4 class="card-title">Expéditeur 1</h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores odio recusandae laudantium.</p>
+                                <p class="like"></p>
+                                <button type='button' class="btn action-btn">Actions ?</button>
+                                <button type='button' class="btn like-btn">Like</button>
+                            </article>
+                        </li>
+                        <li class="touit">
+                            <article class="card">
+                                <h4 class="card-title">Expéditeur</h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores odio recusandae laudantium.</p>
+                                <p class="like">0 like</p>
+                                <button type='button' class="btn action-btn">Actions ?</button>
+                                <button type='button' class="btn like-btn">Like</button>
+                            </article>
+                        </li>
+                        <li class="touit">
+                            <article class="card">
+                                <h4 class="card-title">Expéditeur 3</h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores odio recusandae laudantium.</p>
+                                <p class="like">8 likes</p>
+                                <button type='button' class="btn action-btn">Actions ?</button>
+                                <button type='button' class="btn like-btn">Like</button>
+                            </article>
+                        </li>
+                        <li class="touit">
+                            <article class="card">
+                                <h4 class="card-title">Expéditeur</h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores odio recusandae laudantium.</p>
+                                <p class="like">0 like</p>
+                                <button type='button' class="btn action-btn">Actions ?</button>
+                                <button type='button' class="btn like-btn">Like</button>
+                            </article>
+                        </li>
+                        <li class="touit">
+                            <article class="card">
+                                <h4 class="card-title">Expéditeur</h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores odio recusandae laudantium.</p>
+                                <p class="like">0 like</p>
+                                <button type='button' class="btn action-btn">Actions ?</button>
+                                <button type='button' class="btn like-btn">Like</button>
+                            </article>
+                        </li>
+                        <li class="touit">
+                            <article class="card">
+                                <h4 class="card-title">Expéditeur</h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores odio recusandae laudantium.</p>
+                                <p class="like">0 like</p>
+                                <button type='button' class="btn action-btn">Actions ?</button>
+                                <button type='button' class="btn like-btn">Like</button>
+                            </article>
+                        </li>
+                        <li class="touit">
+                            <article class="card">
+                                <h4 class="card-title">Expéditeur</h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores odio recusandae laudantium.</p>
+                                <p class="like">4 likes</p>
+                                <button type='button' class="btn action-btn">Actions ?</button>
+                                <button type='button' class="btn like-btn">Like</button>
+                            </article>
+                        </li>
+                        <li class="touit">
+                            <article class="card">
+                                <h4 class="card-title">Expéditeur 8</h4>
+                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores odio recusandae laudantium.</p>
+                                <p class="like">0 like</p>
+                                <button type='button' class="btn action-btn">Actions ?</button>
+                                <button type='button' class="btn like-btn">Like</button>
+                            </article>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+      </main>
+      <script src="js/navigation.js"></script>
+      <script src="js/card-position.js"></script>
+      <script src="js/actions-touit.js"></script>
+</body>
+</html>
