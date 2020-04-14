@@ -1,6 +1,7 @@
 const submitBtn = document.getElementById('submit');
 
-submitBtn.addEventListener('click', function(){
+submitBtn.addEventListener('click', function(ev){
+    ev.preventDefault;
     const pseudo = document.getElementById('pseudo').value;
     const message = document.getElementById('msg').value;
     console.log(pseudo);
@@ -24,11 +25,9 @@ function addTouit(name, message) {
     touitLike.setAttribute('class', 'like');
     touitLike.textContent = 'nb likes';
     const buttonAction = document.createElement("button");
-    buttonAction.setAttribute('type', 'button');
     buttonAction.setAttribute('class', 'btn action-btn');
     buttonAction.textContent = 'Actions ?'
     const buttonLike = document.createElement("button");
-    buttonLike.setAttribute('type', 'button');
     buttonLike.setAttribute('class', 'btn like-btn');
     buttonLike.textContent = 'Like';
 
