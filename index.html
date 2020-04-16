@@ -29,12 +29,12 @@
             <section id="new-touit" class="new-touit">
                 <div class="container">
                     <h2 class="section-title">Quoi de <strong>touit</strong> aujourd'hui ?</h2>
-                    <form action="">
+                    <form action="" id="touit-form">
                         <label for="pseudo" class="screen-reader-text">Pseudo</label>
                         <input type="text" name="" id="pseudo" class="pseudo" placeholder="Pseudo" maxlength="16">
                         <label for="msg" class="screen-reader-text">Message</label>
                         <textarea name="" id="msg" class="message" placeholder="Bonjour à tous !" maxlength="256"></textarea>
-                        <button type="button" class="btn" id="submit">Touiter</button>
+                        <button class="btn" id="submit">Touiter</button>
                     </form>
                 </div>
             </section>
@@ -51,6 +51,8 @@
       <script src="js/navigation.js"></script>
       <script src="js/card-position.js"></script>
       <script src="js/api-endpoints.js"></script>
+      <script src="js/gestion-likes.js"></script>
+      <script src="js/gestion-comments.js"></script>
       <script src="js/actions-touit.js"></script>
 </body>
 </html>

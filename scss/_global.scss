@@ -247,7 +247,7 @@ strong {
   border-radius: .4em;
   padding: .8rem;
 
-    .like {
+    .info {
       font-style: italic;
       font-size: 1.4rem;
     }
@@ -278,9 +278,6 @@ strong {
   color: #fff;
   padding: .4rem 1rem;
   margin-left: .4rem;
-  // Rq : firefox ajoute des espaces entre les éléments inline-block du HTML mais pas ceux ajoutés ensuite 
-  // Du coup le layout diffère un peu entre les touits du HTMl et ceux qui sont ajoutés
-  // Ne posera pas de problème par la suite car tous les touits seront importés
   cursor: pointer;
   transition: color .3s ease-in-out, background-color .3s ease-in-out;
 
