@@ -141,6 +141,7 @@ h1 {
   .liste-touits {
     max-height: 70vh;
     overflow-y: scroll;
+    overflow-x: hidden;
   }
 }
 

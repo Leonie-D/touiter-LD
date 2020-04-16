@@ -1,2 +1,0 @@
-scss
-node_modules

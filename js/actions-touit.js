@@ -1,14 +1,3 @@
-const submitBtn = document.getElementById('submit');
-
-submitBtn.addEventListener('click', function(ev){
-    ev.preventDefault;
-    const pseudo = document.getElementById('pseudo').value;
-    const message = document.getElementById('msg').value;
-    console.log(pseudo);
-    console.log(message);
-    addTouit(pseudo, message);
-});
-
 function addTouit(name, message) {
     // création des éléments
     const touit = document.createElement("li");
@@ -43,3 +32,51 @@ function addTouit(name, message) {
 
     cardPosition(); // reorganise les touits
 };
+
+// récupération des touits et mise à jour régulière
+let latestTS = "";
+const getTouitsRequest = new XMLHttpRequest();
+getTouitsRequest.addEventListener('readystatechange', function(){
+    if (getTouitsRequest.readyState === XMLHttpRequest.DONE && getTouitsRequest.status === 200) { 
+        const tousLesMessages = JSON.parse(getTouitsRequest.responseText).messages;
+        for (let touit of tousLesMessages) {
+            const pseudo = touit.name;
+            const message = touit.message;
+            addTouit(pseudo, message);
+        };
+        latestTS = "?ts="+(JSON.parse(getTouitsRequest.responseText).ts.toString());
+    };
+});
+
+function openAndSend(ts) {
+    getTouitsRequest.open("GET", endpointLI + ts, true);
+    getTouitsRequest.send();
+};
+
+openAndSend(latestTS);
+
+setInterval('openAndSend(latestTS)', 30000);
+
+// envoi de touit
+const submitBtn = document.getElementById('submit');
+
+submitBtn.addEventListener('click', function(ev){
+    ev.preventDefault;
+    const pseudo = document.getElementById('pseudo').value;
+    const message = document.getElementById('msg').value;
+
+    const nouveauMessage = new FormData();
+    nouveauMessage.append('name', pseudo);
+    nouveauMessage.append('message', message);
+
+    const postTouitRequest = new XMLHttpRequest();
+    postTouitRequest.open("POST", endpointSE, true);
+    postTouitRequest.addEventListener('readystatechange', function(){
+        if (postTouitRequest.readyState === XMLHttpRequest.DONE && postTouitRequest.status === 200 && JSON.parse(postTouitRequest.responseText).error !== undefined) {
+            alert(JSON.parse(postTouitRequest.responseText).error);
+        };
+    });
+    postTouitRequest.send(nouveauMessage);
+
+    openAndSend(latestTS);
+});

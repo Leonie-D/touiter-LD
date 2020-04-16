@@ -5,5 +5,3 @@ function cardPosition() {
         touit.style.order = touits.length - touits.indexOf(touit);
     };
 };
-
-cardPosition();
