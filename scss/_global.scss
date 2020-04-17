@@ -246,6 +246,12 @@ strong {
   border: .5px solid #2E2E2E;
   border-radius: .4em;
   padding: .8rem;
+  max-width: 100%;
+
+    .card-text {
+      hyphens: auto;
+      word-wrap: break-word;
+    }
 
     .info {
       font-style: italic;
@@ -286,6 +292,18 @@ strong {
       color: $primary;
       background-color: #fff;
     }
+}
+
+.btn-reverse {
+  border-color: #fff;
+  background-color: #fff;
+  color: $primary;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+    background-color: $primary;
+  }
 }
 
 .toggle-menu {
@@ -331,6 +349,14 @@ strong {
   }
 }
 
+.formulaire-commentaire[data-visibility = true]{
+  display: block;
+}
+
+.formulaire-commentaire[data-visibility = false]{
+  display: none;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -350,4 +376,18 @@ form {
       border: .5px solid #2E2E2E;
       padding: .5rem;
     }
+}
+
+.comments-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-around;
+  position: absolute;
+  top: 25%;
+  bottom: 25%;
+  left: 25%;
+  right: 25%;
+  background-color: $primary;
+  padding: 2rem;
 }

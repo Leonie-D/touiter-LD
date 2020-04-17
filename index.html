@@ -19,6 +19,9 @@
                 <ul class="menu" id="menu" hidden>
                     <li><a href="#new_touit">Ecrire un touit</a></li>
                     <li><a href="#read_touits">Lire les touits</a></li>
+                    <li>
+                        <button class="btn btn-reverse" id="refreash">Actualiser</button>
+                    </li>
                     <!-- Possibles liens vers les futurs modules  -->
                 </ul>
             </nav>
@@ -44,6 +47,23 @@
                     <ul class="liste-touits">
                     </ul>
                 </div>
+                <div class="comments-modal">
+                    <article class="card">
+                        <h4 class="card-title"></h4>
+                        <p class="card-text"></p>
+                        <p class="info"></p>
+                        <p class="info"></p>
+                    </article>
+                    <ul class="comments-liste">
+                    </ul>
+                    <form action="" class="comment-form">
+                        <label for="comment-pseudo" class="screen-reader-text">Pseudo</label>
+                        <input type="text" name="" id="comment-pseudo" placeholder="Pseudo" maxlength="16">
+                        <label for="comment" class="screen-reader-text">Message</label>
+                        <textarea name="" id="comment" placeholder="Laisser un commentaire" maxlength="256"></textarea>
+                        <button class="btn btn-reverse" id="comment-submit">Envoyer</button>
+                    </form>
+                </div>
             </section>
         </div>
       </main>
@@ -52,7 +72,6 @@
       <script src="js/card-position.js"></script>
       <script src="js/api-endpoints.js"></script>
       <script src="js/gestion-likes.js"></script>
-      <script src="js/gestion-comments.js"></script>
       <script src="js/actions-touit.js"></script>
 </body>
 </html>

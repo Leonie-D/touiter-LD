@@ -1,5 +1,3 @@
-// ATTENTION: la modification des likes (par moi ou par un autre utilisateur) ne se voit qu'après reload de la page (non automatique)
-
 function ajouterLike(ev, idtouit) {
     ev.preventDefault();
     const request = new XMLHttpRequest();
