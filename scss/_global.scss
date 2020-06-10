@@ -54,6 +54,24 @@ header {
   background-color: $primary;
   color: #fff;
   margin-bottom: 1rem;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 3;
+}
+
+main {
+  margin-top: 5rem;
+}
+
+h2 {
+  color: $primary;
+}
+
+strong {
+  font-style: italic;
+  color: lighten($color: $primary, $amount: 15);
 }
 
 .menu {
@@ -90,7 +108,7 @@ header {
 
 .toggle-menu,
 h1 {
-  z-index: 1;
+  z-index: 5;
 }
 
 @media screen and (max-width: 44.99em) {
@@ -101,19 +119,35 @@ h1 {
 
 .main-container {
   flex-grow: 1;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-areas: 
+    'new-touit'
+    'read-touits'
+    'aside';
 
     &>section {
       margin-bottom: 1rem;
     }
 }
 
+.new-touit {
+  grid-area: new-touit;
+}
+
+.read-touits {
+  grid-area: read-touits;
+}
+
+.aside {
+  grid-area: aside;
+}
+
 @media screen and (min-width: 45em) {
   .main-container {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
     column-gap: .6rem;
+    grid-template-areas: 
+    'new-touit new-touit new-touit aside'
+    'read-touits read-touits read-touits aside'
   }
 
   .menu {
@@ -129,49 +163,6 @@ h1 {
   .toggle-menu {
     display: none;
   }
-
-  .new-touit {
-    grid-column: 1 / span 5;
-  }
-
-  .read-touits {
-    grid-column: span 7 / -1;
-  }
-
-  .liste-touits {
-    max-height: 70vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-  }
-}
-
-@media screen and (min-width: 62em) {
-  .new-touit {
-    grid-column: 1 / span 4;
-  }
-
-  .read-touits {
-    grid-column: span 8 / -1;
-  }
-}
-
-@media screen and (min-width: 100em) {
-  .new-touit {
-    grid-column: 1 / span 3;
-  }
-
-  .read-touits {
-    grid-column: span 9 / -1;
-  }
-}
-
-h2 {
-  color: $primary;
-}
-
-strong {
-  font-style: italic;
-  color: lighten($color: $primary, $amount: 15);
 }
 
 .header-container {
@@ -192,11 +183,12 @@ strong {
 }
 
 .liste-touits {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  row-gap: .6rem;
-  column-gap: .6rem;
   grid-column: 1 / -1;
+  max-width: 100%;
+
+    .touit:not(:first-of-type) {
+      margin-top: .6rem;
+    }
 }
 
 @media screen and (min-width: 36em) {
@@ -242,7 +234,6 @@ strong {
 }
 
 .touit {
-  grid-column: 1 / -1;
   border: .5px solid #2E2E2E;
   border-radius: .4em;
   padding: .8rem;
@@ -259,21 +250,27 @@ strong {
     }
 }
 
-@media screen and (min-width: 62em) {
-  .touit {
-    grid-column: span 6;
+.aside {
+  .stick {
+    position: sticky;
+    top: -100%; // peut-être problématique si le 100% se réfère au parent et que l'enfant est très grand... ?
   }
-}
 
-@media screen and (min-width: 75em) {
-  .touit {
-    grid-column: span 4;
-  }
-}
+  .trends {
+    display: flex;
+    flex-direction: column;
 
-@media screen and (min-width: 100em) {
-  .touit {
-    grid-column: span 3;
+    .touit:not(:first-of-type) {
+      margin-top: .6rem;
+    }
+
+    .top-themes li {
+      display: inline-block;
+    }
+
+    .top-themes li:not(:last-of-type) {
+      margin-inline-end: .6rem;
+    }
   }
 }
 
@@ -378,16 +375,38 @@ form {
     }
 }
 
+// remplacer par collapse ?
 .comments-modal {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: stretch;
   justify-content: space-around;
   position: absolute;
-  top: 25%;
-  bottom: 25%;
+  top: 15%;
   left: 25%;
   right: 25%;
+  min-height: fit-content;
+  max-height: 70%;
   background-color: $primary;
   padding: 2rem;
+  z-index: 2;
+
+    .card {
+      color: #fff;
+    }
+
+    .comments-liste {
+      color: #fff;
+    }
+
+  ::before {
+    content: '';
+    position: absolute;
+    top:-50%;
+    left: -50%;
+    height: 250px;
+    width: 200px;
+    background-color: rgba(255, 255, 255, .15);
+    z-index: 2;
+  }
 }

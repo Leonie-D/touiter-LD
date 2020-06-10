@@ -1,4 +1,4 @@
-function addTouit(name, message, nbLikes, nbComments, idtouit) {
+function addTouit(name, message, nbLikes, nbComments, idtouit, listeTouits) {
     // attention aux accords --> mettre un s ou non ?
     let likeTag = " like";
     if (nbLikes > 1 || nbLikes < -1) {
@@ -38,70 +38,8 @@ function addTouit(name, message, nbLikes, nbComments, idtouit) {
     buttonComment.textContent = 'Commentaires';
     buttonComment.addEventListener('click', function(ev){
         ev.preventDefault();
-        // affichage de la modal avec le touit, les commentaires et le formulaire pour en ajouter un
-
-
-
-
-        // récupération des éléments de formulaire
-        // commentSubmit.addEventListener('click', function(ev){
-        //     ev.preventDefault();
-        //     const request = new XMLHttpRequest();
-        //     request.open('POST', endpointCMTSend, true);
-        //     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        //     request.addEventListener('readystatechange', function(){
-        //         if (request.readyState === XMLHttpRequest.DONE && request.status === 200 && JSON.parse(request.responseText).error !== undefined) {
-        //             alert(JSON.parse(request.responseText).error);
-        //         };
-        //     });
-        //     request.send('name='+nameInput.value+'&comment='+commentInput.value+'&message_id='+idtouit);
-        //     commentForm.dataset.visibility = false;
-        // });
-
-        // // mise en place
-        // card.appendChild(commentForm);
-        // commentForm.appendChild(nameLabel);
-        // commentForm.appendChild(nameInput);
-        // commentForm.appendChild(commentLabel);
-        // commentForm.appendChild(commentInput);
-        // commentForm.appendChild(commentSubmit);
+        afficherModal(idtouit, card, nbComments);
     });
-
-    // const buttonReadComments = document.createElement("button");
-    // buttonReadComments.setAttribute('class', 'btn');
-    // buttonReadComments.textContent = 'Afficher les commentaires';
-    // let clickCountRead = 0;
-    // buttonReadComments.addEventListener('click', function(ev){
-    //     ev.preventDefault();
-    //     clickCountRead ++;
-    //     if (clickCountRead === 1) {
-    //         const request = new XMLHttpRequest();
-    //         request.open('GET', endpointCMTList+'?message_id='+idtouit, true);
-    //         request.addEventListener('readystatechange', function(){
-    //             if (request.readyState === XMLHttpRequest.DONE && request.status === 200 && nbComments > 0) {
-    //                 const allComments = JSON.parse(request.responseText).comments;
-    //                 for (let com of allComments) {
-    //                     // création des éléments
-    //                     const touitCommentSender = document.createElement("p");
-    //                     touitCommentSender.setAttribute('class', 'comment');
-    //                     touitCommentSender.textContent = com.name;
-    //                     const touitCommentContent = document.createElement("p");
-    //                     touitCommentContent.setAttribute('class', 'comment');
-    //                     touitCommentContent.textContent = com.comment;
-    //                     // insertion sous le touit
-    //                     card.appendChild(touitCommentSender);
-    //                     card.appendChild(touitCommentContent);
-    //                 };
-    //             };
-    //         });
-    //         request.send();
-    //     } else if (clickCountRead % 2 === 0) {
-    //         console.log('faire un display:none');
-    //     } else {
-    //         console.log('faire un display:block');
-    //     };
-    //     // Ajouter une structure (ul/li) autour des commentaires pour futur layout
-    // });
 
     const buttonLike = document.createElement("button");
     buttonLike.setAttribute('class', 'btn like-btn');
@@ -118,23 +56,20 @@ function addTouit(name, message, nbLikes, nbComments, idtouit) {
     });
 
     // insertion des éléments
-    const listeTouits = document.querySelector('.liste-touits');
     listeTouits.appendChild(touit);
     touit.appendChild(card);
     card.appendChild(touitTitle);
     card.appendChild(touitContent);
     card.appendChild(touitLike);
     card.appendChild(touitComment);
-    card.appendChild(buttonAddComment);
-    card.appendChild(buttonReadComments);
+    card.appendChild(buttonComment);
     card.appendChild(buttonLike);
     card.appendChild(buttonUnlike);
-
-    cardPosition(); // reorganise les touits
 };
 
 // récupération des touits
 let latestTS = "";
+const listeTouits = document.querySelector('.liste-touits');
 const getTouitsRequest = new XMLHttpRequest();
 getTouitsRequest.addEventListener('readystatechange', function(){
     if (getTouitsRequest.readyState === XMLHttpRequest.DONE && getTouitsRequest.status === 200) { 
@@ -145,9 +80,10 @@ getTouitsRequest.addEventListener('readystatechange', function(){
             const nbLikes = touit.likes;
             const nbComments = touit.comments_count;
             const idtouit = touit.id;
-            addTouit(pseudo, message, nbLikes, nbComments, idtouit);
+            addTouit(pseudo, message, nbLikes, nbComments, idtouit, listeTouits);
         };
         latestTS = "?ts="+(JSON.parse(getTouitsRequest.responseText).ts.toString());
+        cardPosition(); // reorganise les touits
     };
 });
 
@@ -158,7 +94,7 @@ function openAndSend(ts) {
 
 openAndSend(latestTS);
 
-// mise à jour régulière
+// mise à jour régulière des nouveaux touits
 setInterval(function(){
     openAndSend(latestTS)
 }, 3000);
@@ -199,3 +135,163 @@ touitForm.addEventListener('submit', function(ev){
 
     openAndSend(latestTS);
 });
+
+// affichage du collapse avec les commentaires et le formulaire pour en poster un
+function afficherModal(idtouit, card, nbComments) {
+    const commentsModal = document.querySelector('.comments-modal');
+    const commentsList = document.querySelector('.comments-liste');
+
+    const cardCopy = card.cloneNode(true);
+    for (let i=0; i<3; i++) {
+        cardCopy.removeChild(cardCopy.lastChild);
+    };
+    commentsModal.insertBefore(cardCopy,commentsList);
+    commentsModal.style.display = "flex";
+
+    readComments(idtouit, nbComments, commentsList);
+
+    // envoi d'un nouveau commentaire lors de la validation du formulaire
+    const commentSubmit = document.querySelector('.comment-form');
+    commentSubmit.addEventListener('submit', function(ev){
+        ev.preventDefault();
+        envoyerComment(idtouit);
+    });
+};
+
+// récupérer les commentaires
+function readComments(idtouit, nbComments, commentsList) {
+    const request = new XMLHttpRequest();
+    request.open('GET', endpointCMTList+'?message_id='+idtouit, true);
+    request.addEventListener('readystatechange', function(){
+        if (request.readyState === XMLHttpRequest.DONE && request.status === 200 && nbComments > 0) {
+            const allComments = JSON.parse(request.responseText).comments;
+            for (let com of allComments) {
+                // création des éléments
+                const touitCommentLi = document.createElement("li");
+
+                const touitCommentSender = document.createElement("p");
+                touitCommentSender.setAttribute('class', 'comment');
+                touitCommentSender.textContent = com.name;
+
+                const touitCommentContent = document.createElement("p");
+                touitCommentContent.setAttribute('class', 'comment');
+                touitCommentContent.textContent = com.comment;
+
+                // insertion sous le touit
+                commentsList.appendChild(touitCommentLi);
+                touitCommentLi.appendChild(touitCommentSender);
+                touitCommentLi.appendChild(touitCommentContent);
+            };
+        };
+    });
+    request.send();
+};
+
+// envoi de commentaires
+function envoyerComment(idtouit) {
+    const name = document.getElementById('comment-pseudo').value;
+    const commentaire = document.getElementById('comment').value;
+    const request = new XMLHttpRequest();
+    request.open('POST', endpointCMTSend, true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    request.addEventListener('readystatechange', function(){
+        if (request.readyState === XMLHttpRequest.DONE && request.status === 200 && JSON.parse(request.responseText).error !== undefined) {
+            document.getElementById('comment-pseudo').value = "";
+            document.getElementById('comment').value = "";
+            alert(JSON.parse(request.responseText).error);
+        } else if (request.readyState === XMLHttpRequest.DONE && request.status === 200 && JSON.parse(request.responseText).error === undefined) {
+            document.getElementById('comment-pseudo').value = "";
+            document.getElementById('comment').value = "";
+            closeModal();
+        };
+    });
+    request.send('name='+name+'&comment='+commentaire+'&message_id='+idtouit);
+};
+
+// fermeture de la modal
+const buttonClose = document.getElementById('close');
+buttonClose.addEventListener('click', closeModal);
+
+function closeModal() {
+  const commentsModal = document.querySelector('.comments-modal');
+  const commentsList = document.querySelector('.comments-liste');
+  commentsModal.style.display = "none";
+  commentsModal.removeChild(document.querySelector('.comments-modal .card'));
+  while (commentsList.childElementCount>0) {
+    commentsList.removeChild(commentsList.firstChild);
+  };
+};
+
+// affichage des touits les plus likés
+const listeTopTouits = document.querySelector('.top-touits');
+getTopTouits = new XMLHttpRequest();
+getTopTouits.open('GET', endpointLKTop, true);
+getTopTouits.addEventListener('readystatechange', function(){
+    if (getTopTouits.readyState === XMLHttpRequest.DONE && getTopTouits.status === 200) { 
+        const tousLesMessages = JSON.parse(getTopTouits.responseText).top;
+        for (let touit of tousLesMessages) {
+            const pseudo = touit.name;
+            const message = touit.message;
+            const nbLikes = touit.likes;
+            const nbComments = touit.comments_count;
+            const idtouit = touit.id;
+            addTouit(pseudo, message, nbLikes, nbComments, idtouit, listeTopTouits);
+        };
+    };
+});
+getTopTouits.send();
+
+// affichage des influenceurs
+function addInfluenceur(nom, nbMessages, nbComments) {
+    const influenceur = document.createElement('li');
+
+    const nomInfluenceur = document.createElement('h4');
+    nomInfluenceur.textContent = nom;
+
+    const nbMessagesSent = document.createElement('p');
+    nbMessagesSent.textContent = nbMessages + ' touits';
+
+    const nbCommentsSent = document.createElement('p');
+    nbCommentsSent.textContent = nbComments + ' commentaires';
+
+    const listInfluenceurs = document.querySelector('.top-pseudos');
+    listInfluenceurs.appendChild(influenceur);
+    influenceur.appendChild(nomInfluenceur);
+    influenceur.appendChild(nbMessagesSent);
+    influenceur.appendChild(nbCommentsSent);
+};
+
+getInfluenceurs = new XMLHttpRequest();
+getInfluenceurs.open('GET', endpointINF, true);
+getInfluenceurs.addEventListener('readystatechange', function(){
+    if (getInfluenceurs.readyState === XMLHttpRequest.DONE && getInfluenceurs.status === 200) { 
+        const lesInfluenceurs = Object.entries(JSON.parse(getInfluenceurs.responseText).influencers);
+        for (let influenceur of lesInfluenceurs) {
+            const nom = influenceur[0];
+            const nbMessages = influenceur[1].messages;
+            const nbComments = influenceur[1].comments;
+            addInfluenceur(nom, nbMessages, nbComments);
+        };
+    };
+});
+getInfluenceurs.send();
+
+// affichage des trendings
+const topTrend = document.querySelector('.top-themes');
+
+getTrendings = new XMLHttpRequest();
+getTrendings.open('GET', endpointTR, true);
+getTrendings.addEventListener('readystatechange', function(){
+    if (getTrendings.readyState === XMLHttpRequest.DONE && getTrendings.status === 200) { 
+        const trendings = Object.entries(JSON.parse(getTrendings.responseText));
+        trendings.sort(function(a, b){
+            return b[1]-a[1];
+        });
+        for (let i=0; i<10; i++) {
+            const trendingList = document.createElement('li');
+            trendingList.textContent = '#'+trendings[i][0];
+            topTrend.appendChild(trendingList);
+        };
+    };
+});
+getTrendings.send();

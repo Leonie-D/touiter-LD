@@ -19,6 +19,8 @@
                 <ul class="menu" id="menu" hidden>
                     <li><a href="#new_touit">Ecrire un touit</a></li>
                     <li><a href="#read_touits">Lire les touits</a></li>
+                    <li><a href="#trends">A la une</a></li>
+                    <li><a href="#influencers">A suivre</a></li>
                     <li>
                         <button class="btn btn-reverse" id="refreash">Actualiser</button>
                     </li>
@@ -29,7 +31,7 @@
       </header>
       <main>
           <div class="main-container">
-            <section id="new-touit" class="new-touit">
+            <section id="new_touit" class="new-touit">
                 <div class="container">
                     <h2 class="section-title">Quoi de <strong>touit</strong> aujourd'hui ?</h2>
                     <form action="" id="touit-form">
@@ -41,21 +43,15 @@
                     </form>
                 </div>
             </section>
-            <section id="read-touits" class="read-touits">
+            <section id="read_touits" class="read-touits">
                 <div class="container">
-                    <h2 class="section-title">Déjà <strong>touité</strong> au CEFIM</h2>
-                    <ul class="liste-touits">
-                    </ul>
+                    <h2 class="section-title">Ca <strong>touite</strong> au CEFIM</h2>
+                    <ul class="liste-touits"></ul>
                 </div>
                 <div class="comments-modal">
-                    <article class="card">
-                        <h4 class="card-title"></h4>
-                        <p class="card-text"></p>
-                        <p class="info"></p>
-                        <p class="info"></p>
-                    </article>
-                    <ul class="comments-liste">
-                    </ul>
+                    <button class="btn btn-reverse" id="close">Fermer</button>
+                    <!--insérer ici le contenu du touit (article)-->
+                    <ul class="comments-liste"></ul>
                     <form action="" class="comment-form">
                         <label for="comment-pseudo" class="screen-reader-text">Pseudo</label>
                         <input type="text" name="" id="comment-pseudo" placeholder="Pseudo" maxlength="16">
@@ -63,6 +59,21 @@
                         <textarea name="" id="comment" placeholder="Laisser un commentaire" maxlength="256"></textarea>
                         <button class="btn btn-reverse" id="comment-submit">Envoyer</button>
                     </form>
+                </div>
+            </section>
+            <section class="aside">
+                <div class="stick">
+                    <div id="trends" class="trends container">
+                        <h2 class="section-title">A la <strong>une</strong></h2>
+                        <h3>Les meilleures touits</h3>
+                        <ol class="top-touits"></ol>
+                        <h3>Trendings</h3>
+                        <ol class="top-themes"></ol>
+                    </div>
+                    <div id="influencers" class="influencers container">
+                            <h2 class="section-title">A <strong>suivre</strong></h3>
+                            <ul class="top-pseudos"></ul>
+                    </div>
                 </div>
             </section>
         </div>
