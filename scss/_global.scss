@@ -376,6 +376,22 @@ form {
 }
 
 // remplacer par collapse ?
+.collapsible {
+  background-color: $primary;
+  color: #fff;
+  margin-top: .8rem;
+  margin-right: -.8rem;
+  margin-left: -.8rem;
+  margin-bottom: -.8rem;
+  border-end-end-radius: .4rem;
+  border-end-start-radius: .4rem;
+  display: none;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-around;
+  padding: 2rem;
+}
+
 .comments-modal {
   display: none;
   flex-direction: column;

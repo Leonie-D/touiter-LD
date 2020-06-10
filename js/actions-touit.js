@@ -38,7 +38,7 @@ function addTouit(name, message, nbLikes, nbComments, idtouit, listeTouits) {
     buttonComment.textContent = 'Commentaires';
     buttonComment.addEventListener('click', function(ev){
         ev.preventDefault();
-        afficherModal(idtouit, card, nbComments);
+        afficherCollapse(idtouit, nbComments);
     });
 
     const buttonLike = document.createElement("button");
@@ -55,6 +55,10 @@ function addTouit(name, message, nbLikes, nbComments, idtouit, listeTouits) {
         removeLike(ev, idtouit);
     });
 
+    const collapsible = document.createElement('div');
+    collapsible.setAttribute('class', 'collapsible');
+    collapsible.setAttribute('id', 'collapsible'+idtouit);
+
     // insertion des éléments
     listeTouits.appendChild(touit);
     touit.appendChild(card);
@@ -65,6 +69,7 @@ function addTouit(name, message, nbLikes, nbComments, idtouit, listeTouits) {
     card.appendChild(buttonComment);
     card.appendChild(buttonLike);
     card.appendChild(buttonUnlike);
+    touit.appendChild(collapsible);
 };
 
 // récupération des touits
@@ -137,18 +142,20 @@ touitForm.addEventListener('submit', function(ev){
 });
 
 // affichage du collapse avec les commentaires et le formulaire pour en poster un
-function afficherModal(idtouit, card, nbComments) {
-    const commentsModal = document.querySelector('.comments-modal');
-    const commentsList = document.querySelector('.comments-liste');
+function afficherCollapse(idtouit, nbComments) {
+    const collapsibleDiv = document.getElementById('collapsible'+idtouit);
 
-    const cardCopy = card.cloneNode(true);
-    for (let i=0; i<3; i++) {
-        cardCopy.removeChild(cardCopy.lastChild);
-    };
-    commentsModal.insertBefore(cardCopy,commentsList);
-    commentsModal.style.display = "flex";
-
+    // création des éléments de la div : liste des commentaires et formulaire
+    const commentsList = document.createElement('ul');
+    commentsList.setAttribute('class', 'comments-liste');
+    collapsibleDiv.appendChild(commentsList);
     readComments(idtouit, nbComments, commentsList);
+    //manque formulaire...
+
+    // affichage de la div
+    collapsibleDiv.style.display = 'flex';
+
+    // modification du bouton pour ouvrir en fermeture... a faire
 
     // envoi d'un nouveau commentaire lors de la validation du formulaire
     const commentSubmit = document.querySelector('.comment-form');
@@ -170,11 +177,11 @@ function readComments(idtouit, nbComments, commentsList) {
                 const touitCommentLi = document.createElement("li");
 
                 const touitCommentSender = document.createElement("p");
-                touitCommentSender.setAttribute('class', 'comment');
+                touitCommentSender.setAttribute('class', 'comment-pseudo');
                 touitCommentSender.textContent = com.name;
 
                 const touitCommentContent = document.createElement("p");
-                touitCommentContent.setAttribute('class', 'comment');
+                touitCommentContent.setAttribute('class', 'comment-content');
                 touitCommentContent.textContent = com.comment;
 
                 // insertion sous le touit
@@ -208,18 +215,8 @@ function envoyerComment(idtouit) {
     request.send('name='+name+'&comment='+commentaire+'&message_id='+idtouit);
 };
 
-// fermeture de la modal
-const buttonClose = document.getElementById('close');
-buttonClose.addEventListener('click', closeModal);
-
-function closeModal() {
-  const commentsModal = document.querySelector('.comments-modal');
-  const commentsList = document.querySelector('.comments-liste');
-  commentsModal.style.display = "none";
-  commentsModal.removeChild(document.querySelector('.comments-modal .card'));
-  while (commentsList.childElementCount>0) {
-    commentsList.removeChild(commentsList.firstChild);
-  };
+function closeCollapsible(idtouit) {
+    getElementById('collapsible'+idtouit).style.display = 'none';
 };
 
 // affichage des touits les plus likés
