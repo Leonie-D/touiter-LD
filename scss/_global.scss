@@ -65,8 +65,17 @@ main {
   margin-top: 5rem;
 }
 
+section {
+  scroll-margin-top: 5rem;
+}
+
 h2 {
   color: $primary;
+  margin-top: 1rem;
+}
+
+h3 {
+  grid-column: 1/-1;
 }
 
 strong {
@@ -185,8 +194,10 @@ h1 {
 .liste-touits {
   grid-column: 1 / -1;
   max-width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
 
-    .touit:not(:first-of-type) {
+    .touit:not(:last-of-type) {
       margin-top: .6rem;
     }
 }
@@ -271,6 +282,14 @@ h1 {
     .top-themes li:not(:last-of-type) {
       margin-inline-end: .6rem;
     }
+  }
+
+  .top-pseudos {
+    grid-column: 1/-1;
+
+      li {
+        margin-bottom: .6rem;
+      }
   }
 }
 
@@ -375,7 +394,6 @@ form {
     }
 }
 
-// remplacer par collapse ?
 .collapsible {
   background-color: $primary;
   color: #fff;
@@ -390,39 +408,12 @@ form {
   align-items: stretch;
   justify-content: space-around;
   padding: 2rem;
-}
 
-.comments-modal {
-  display: none;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: space-around;
-  position: absolute;
-  top: 15%;
-  left: 25%;
-  right: 25%;
-  min-height: fit-content;
-  max-height: 70%;
-  background-color: $primary;
-  padding: 2rem;
-  z-index: 2;
+    li {
+      margin-bottom: .6rem;
 
-    .card {
-      color: #fff;
+        >p:first-of-type {
+          font-weight: 700;
+        }
     }
-
-    .comments-liste {
-      color: #fff;
-    }
-
-  ::before {
-    content: '';
-    position: absolute;
-    top:-50%;
-    left: -50%;
-    height: 250px;
-    width: 200px;
-    background-color: rgba(255, 255, 255, .15);
-    z-index: 2;
-  }
 }

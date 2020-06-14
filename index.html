@@ -34,6 +34,7 @@
             <section id="new_touit" class="new-touit">
                 <div class="container">
                     <h2 class="section-title">Quoi de <strong>touit</strong> aujourd'hui ?</h2>
+                    <h3>Poster un touit</h3>
                     <form action="" id="touit-form">
                         <label for="pseudo" class="screen-reader-text">Pseudo</label>
                         <input type="text" name="" id="pseudo" class="pseudo" placeholder="Pseudo" maxlength="16">
@@ -48,23 +49,12 @@
                     <h2 class="section-title">Ca <strong>touite</strong> au CEFIM</h2>
                     <ul class="liste-touits"></ul>
                 </div>
-                <div class="comments-modal">
-                    
-                    <ul class="comments-liste"></ul>
-                    <form action="" class="comment-form">
-                        <label for="comment-pseudo" class="screen-reader-text">Pseudo</label>
-                        <input type="text" name="" id="comment-pseudo" placeholder="Pseudo" maxlength="16">
-                        <label for="comment" class="screen-reader-text">Message</label>
-                        <textarea name="" id="comment" placeholder="Laisser un commentaire" maxlength="256"></textarea>
-                        <button class="btn btn-reverse" id="comment-submit">Envoyer</button>
-                    </form>
-                </div>
             </section>
             <section class="aside">
                 <div class="stick">
                     <div id="trends" class="trends container">
                         <h2 class="section-title">A la <strong>une</strong></h2>
-                        <h3>Les meilleures touits</h3>
+                        <h3>Les meilleurs touits</h3>
                         <ol class="top-touits"></ol>
                         <h3>Trendings</h3>
                         <ol class="top-themes"></ol>
@@ -79,7 +69,6 @@
       </main>
   
       <script src="js/navigation.js"></script>
-      <script src="js/card-position.js"></script>
       <script src="js/api-endpoints.js"></script>
       <script src="js/gestion-likes.js"></script>
       <script src="js/actions-touit.js"></script>

@@ -35,10 +35,13 @@ function addTouit(name, message, nbLikes, nbComments, idtouit, listeTouits) {
 
     const buttonComment = document.createElement("button");
     buttonComment.setAttribute('class', 'btn');
+    buttonComment.setAttribute('id', 'buttonComment'+idtouit);
     buttonComment.textContent = 'Commentaires';
-    buttonComment.addEventListener('click', function(ev){
+    buttonComment.addEventListener('click', function _openCollapse(ev){
         ev.preventDefault();
         afficherCollapse(idtouit, nbComments);
+        buttonComment.textContent = 'Fermer';
+        buttonComment.removeEventListener('click', _openCollapse);
     });
 
     const buttonLike = document.createElement("button");
@@ -88,7 +91,6 @@ getTouitsRequest.addEventListener('readystatechange', function(){
             addTouit(pseudo, message, nbLikes, nbComments, idtouit, listeTouits);
         };
         latestTS = "?ts="+(JSON.parse(getTouitsRequest.responseText).ts.toString());
-        cardPosition(); // reorganise les touits
     };
 });
 
@@ -145,20 +147,72 @@ touitForm.addEventListener('submit', function(ev){
 function afficherCollapse(idtouit, nbComments) {
     const collapsibleDiv = document.getElementById('collapsible'+idtouit);
 
-    // création des éléments de la div : liste des commentaires et formulaire
+    // création des éléments de la div :
+    // liste des commentaires
     const commentsList = document.createElement('ul');
     commentsList.setAttribute('class', 'comments-liste');
     collapsibleDiv.appendChild(commentsList);
     readComments(idtouit, nbComments, commentsList);
-    //manque formulaire...
+    // formulaire
+    const commentForm = document.createElement('form');
+    commentForm.setAttribute('class', 'comment-form');
+
+    const pseudoLabel = document.createElement('label');
+    pseudoLabel.setAttribute('for', 'comment-pseudo');
+    pseudoLabel.setAttribute('class', 'screen-reader-text');
+    pseudoLabel.textContent = 'Pseudo';
+
+    const pseudoInput = document.createElement('input');
+    pseudoInput.setAttribute('type', 'text');
+    pseudoInput.setAttribute('id', 'comment-pseudo');
+    pseudoInput.setAttribute('placeholder', 'Pseudo');
+    pseudoInput.setAttribute('maxlength', '16');
+
+    const commentLabel = document.createElement('label');
+    commentLabel.setAttribute('for', 'comment');
+    commentLabel.setAttribute('class', 'screen-reader-text');
+    commentLabel.textContent = 'Message';
+
+    const commentTextarea = document.createElement('textarea');
+    commentTextarea.setAttribute('id', 'comment');
+    commentTextarea.setAttribute('placeholder', 'Laisser un commentaire');
+    commentTextarea.setAttribute('maxlength', '256');
+
+    const commentSubmit = document.createElement('button');
+    commentSubmit.setAttribute('class', 'btn btn-reverse');
+    commentSubmit.setAttribute('id', 'comment-submit');
+    commentSubmit.textContent = 'Envoyer';
+    commentSubmit.addEventListener('click', function(ev){
+        ev.preventDefault;
+        envoyerComment(idtouit);
+    });
+
+    collapsibleDiv.appendChild(commentForm);
+    commentForm.appendChild(pseudoLabel);
+    commentForm.appendChild(pseudoInput);
+    commentForm.appendChild(commentLabel);
+    commentForm.appendChild(commentTextarea);
+    commentForm.appendChild(commentSubmit);
 
     // affichage de la div
     collapsibleDiv.style.display = 'flex';
 
-    // modification du bouton pour ouvrir en fermeture... a faire
+    // modification du bouton pour ouvrir en fermeture
+    const commentButton = document.getElementById('buttonComment'+idtouit);
+    commentButton.addEventListener('click', function _closeCollapse(ev){
+        ev.preventDefault();
+        closeCollapsible(idtouit);
+        commentButton.textContent = 'Commentaires';
+        commentButton.removeEventListener('click', _closeCollapse);
+        commentButton.addEventListener('click', function _openCollapse(ev){
+            ev.preventDefault();
+            afficherCollapse(idtouit, nbComments);
+            commentButton.textContent = 'Fermer';
+            commentButton.removeEventListener('click', _openCollapse);
+        });
+    });
 
     // envoi d'un nouveau commentaire lors de la validation du formulaire
-    const commentSubmit = document.querySelector('.comment-form');
     commentSubmit.addEventListener('submit', function(ev){
         ev.preventDefault();
         envoyerComment(idtouit);
@@ -209,14 +263,21 @@ function envoyerComment(idtouit) {
         } else if (request.readyState === XMLHttpRequest.DONE && request.status === 200 && JSON.parse(request.responseText).error === undefined) {
             document.getElementById('comment-pseudo').value = "";
             document.getElementById('comment').value = "";
-            closeModal();
+            closeCollapsible(idtouit);
         };
     });
     request.send('name='+name+'&comment='+commentaire+'&message_id='+idtouit);
 };
 
+// fermeture de la collapse
 function closeCollapsible(idtouit) {
-    getElementById('collapsible'+idtouit).style.display = 'none';
+    const collapsibleDiv = document.getElementById('collapsible'+idtouit);
+    // vider la div
+    while (collapsibleDiv.firstChild) {
+        collapsibleDiv.removeChild(collapsibleDiv.firstChild);
+    };
+    // ne plus afficher la div
+    collapsibleDiv.style.display = 'none';
 };
 
 // affichage des touits les plus likés
